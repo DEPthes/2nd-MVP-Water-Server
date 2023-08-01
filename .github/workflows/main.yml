@@ -73,7 +73,7 @@ jobs:
         --application-name water \
         --deployment-group-name water-group \
         --file-exists-behavior OVERWRITE \
-        --s3-location bucket=water-mvp,bundleType=zip,key=water.zip \ 
+        --s3-location bucket=water-mvp,bundleType=zip,key=water.zip \
         --region ap-northeast-2
 
 
