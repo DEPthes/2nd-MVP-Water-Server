@@ -2,9 +2,9 @@ name: water server CI/CD
 
 on:
   push:
-    branches: [ feat/#2_cicd ]
+    branches: [ master ]
   pull_request:
-    branches: [ feat/#2_cicd ]
+    branches: [ master ]
 
 env:
   S3_BUCKET_NAME: water-mvp
