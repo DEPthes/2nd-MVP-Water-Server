@@ -49,9 +49,16 @@ public class KakaoController {
                 .email((String) userInfoMap.get("email"))
                 .build();
 
+
         String email = userInfo.getEmail();
 
         if (!userService.existsEmail(email)) {
+            String profileImage = (String) userInfoMap.get("profileImage");
+            if (profileImage != null) {
+                userInfo.setImage(profileImage);
+            } else {
+                userInfo.setImage(default_image);
+            }
             userService.createUser(userInfo);
         }
         // BaseResponse 객체를 생성하여 JSON 응답 데이터 구성
