@@ -1,9 +1,12 @@
 package com.example.water.global.auth;
 import com.example.water.domain.user.UserDto;
 import com.example.water.domain.user.UserService;
+import com.example.water.global.BaseResponse;
+import com.example.water.global.SuccessCode;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,33 +39,26 @@ public class KakaoController {
         return "login";
     }
     @GetMapping("/kakao")
-    public String getUI(@RequestParam String code, Model model) throws IOException, ParseException {
+    public ResponseEntity<BaseResponse<UserDto>> getUI(@RequestParam String code) throws IOException, ParseException {
         String default_image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBMnebXD_QrhqKXKApXSZ7fbUlFaElymTpgQ&usqp=CAU";
         String access_token = s.getToken(code);
-
-        Map<String, Object> userInfoMap = s.getUserInfo(access_token, default_image);
-        UserDto userInfo = new UserDto();
-        userInfo.setNickname((String) userInfoMap.get("nickname"));
-        userInfo.setImage((String) userInfoMap.get("profileImage"));
-        userInfo.setEmail((String) userInfoMap.get("email"));
+        Map<String, Object> userInfoMap = s.getUserInfo(access_token, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBMnebXD_QrhqKXKApXSZ7fbUlFaElymTpgQ&usqp=CAU");
+        UserDto userInfo = UserDto.builder()
+                .nickname((String) userInfoMap.get("nickname"))
+                .image((String) userInfoMap.get("profileImage"))
+                .email((String) userInfoMap.get("email"))
+                .build();
 
         String email = userInfo.getEmail();
-        String nickname = userInfo.getNickname();
-        String profileImage = userInfo.getImage();
 
-        if (profileImage == null) {
-            profileImage = default_image;
-        }
-
-        if(!userService.existsEmail(email)){
+        if (!userService.existsEmail(email)) {
             userService.createUser(userInfo);
         }
+        // BaseResponse 객체를 생성하여 JSON 응답 데이터 구성
+        BaseResponse<UserDto> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, userInfo);
 
-        model.addAttribute("code", code);
-        model.addAttribute("access_token", access_token);
-        model.addAttribute("userInfo", userInfo);
-
-        return "index"; //로그인 결과 확인을 위함.
+        // ResponseEntity를 사용하여 HTTP 상태 코드와 함께 응답 데이터 반환
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 }
 
