@@ -33,11 +33,16 @@ public class KakaoController {
     private String REDIRECT_URL;
 
     @GetMapping("/login")
-    public String login(Model model){
-        model.addAttribute("CLIENT_ID", CLIENT_ID);
-        model.addAttribute("REDIRECT_URL", REDIRECT_URL);
-        return "login";
+    public String kakaoLogin() {
+        String kakaoLoginUrl = "https://kauth.kakao.com/oauth/authorize" +
+                "?client_id=" + CLIENT_ID +
+                "&redirect_uri=" + REDIRECT_URL +
+                "&response_type=code" +
+                "&scope=profile_nickname profile_image account_email";
+
+        return "redirect:" + kakaoLoginUrl;
     }
+
     @GetMapping("/kakao")
     public ResponseEntity<BaseResponse<UserDto>> getUI(@RequestParam String code) throws IOException, ParseException {
         String default_image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBMnebXD_QrhqKXKApXSZ7fbUlFaElymTpgQ&usqp=CAU";
@@ -48,7 +53,6 @@ public class KakaoController {
                 .image((String) userInfoMap.get("profileImage"))
                 .email((String) userInfoMap.get("email"))
                 .build();
-
 
         String email = userInfo.getEmail();
 
