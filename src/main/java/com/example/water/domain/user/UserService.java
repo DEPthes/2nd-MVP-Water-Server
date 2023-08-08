@@ -20,6 +20,10 @@ public class UserService {
                 .build();
 
         User savedUser = userRepository.save(user);
+
+        // 생성된 사용자의 ID를 userInfo 객체에 설정
+        request.setUserId(savedUser.getUserId());
+
         return savedUser.getUserId();
     }
 
