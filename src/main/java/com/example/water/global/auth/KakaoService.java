@@ -81,8 +81,14 @@ public class KakaoService {
         String id = obj.get("id").toString();
         String nickname = ((JSONObject) obj.get("properties")).get("nickname").toString();
         String email = ((JSONObject) obj.get("kakao_account")).get("email").toString();
-
         String profileImage = default_image;
+
+        if (((JSONObject) obj.get("kakao_account")).containsKey("profile")) {
+            JSONObject profile = (JSONObject) ((JSONObject) obj.get("kakao_account")).get("profile");
+            if (profile.containsKey("profile_image_url")) {
+                profileImage = profile.get("profile_image_url").toString();
+            }
+        }
 
         Map<String, Object> result = new HashMap<>();
         result.put("id", id);
@@ -93,6 +99,20 @@ public class KakaoService {
         return result;
     }
 
+    public void deleteUser(String access_token, Long userId) throws IOException {
+        String host = "https://kapi.kakao.com/v1/user/unlink";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + access_token);
+        headers.set("Accept", "application/json;charset=utf-8");
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(host, HttpMethod.POST, requestEntity, String.class);
+
+        //회원 삭제(userId를 사용하여 DB에서 회원 삭제)
+        userService.deleteUser(userId);
+    }
 
 }
 
