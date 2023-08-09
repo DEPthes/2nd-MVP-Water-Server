@@ -30,6 +30,12 @@ public class KakaoController {
     @Value("${kakao.redirect.url}")
     private String REDIRECT_URL;
 
+    // test
+    @GetMapping("/test")
+    public String test() {
+        return "test!!!";
+    }
+
     @GetMapping("/login")
     public String kakaoLogin() {
         String kakaoLoginUrl = "https://kauth.kakao.com/oauth/authorize" +
