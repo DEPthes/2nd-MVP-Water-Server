@@ -32,7 +32,6 @@ dependencies {
 	// Jasypt
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
 
-
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.7.14'
 	implementation 'io.github.cdimascio:java-dotenv:5.2.1'//.env를 위한 의존성
 	//JSON 사용을 위한 jackson 의존성 추가
