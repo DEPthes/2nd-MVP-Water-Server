@@ -1,6 +1,7 @@
 package com.example.water.global.auth;
 
 import com.example.water.domain.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 
 import org.json.simple.parser.*;
@@ -15,9 +16,10 @@ import java.io.*;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class KakaoService {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @Value("${kakao.client.id}")
     private String CLIENT_ID;
