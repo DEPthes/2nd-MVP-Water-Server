@@ -72,18 +72,17 @@ public class KakaoController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
+    @ResponseBody
     @PostMapping("/exit")
     public ResponseEntity<BaseResponse<String>> exitKakao(@RequestParam String access_token) {
         try {
             Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
             String email = (String) userInfo.get("email");
 
-            //email을 사용하여 DB에서 유저 정보 조회
-            User user = userService.findByEmail(email);
+            User user = userService.findByEmail(email);//email을 사용하여 DB에서 유저 정보 조회
 
             Long userId = user.getUserId();
             kakaoService.deleteUser(access_token, userId);
-
             BaseResponse<String> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, "계정 탈퇴가 완료되었습니다.");
             return ResponseEntity.ok(response);
         } catch (IOException e) {
@@ -91,6 +90,18 @@ public class KakaoController {
             BaseResponse<String> errorResponse = BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "계정 탈퇴에 실패하였습니다.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
+    }
+
+    @ResponseBody
+    @PostMapping("/logout")
+    public ResponseEntity<BaseResponse<String>> logout(@RequestParam String access_token) {
+
+        // 카카오 로그아웃 API 호출
+        kakaoService.logout(access_token);
+
+        // 로그아웃 성공 메시지를 응답으로 전송
+        BaseResponse<String> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, "로그아웃에 성공했습니다.");
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
 }

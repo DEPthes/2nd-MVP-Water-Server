@@ -96,6 +96,7 @@ public class KakaoService {
         User user = userService.findByEmail(email);
 
         Map<String, Object> result = new HashMap<>();
+
         result.put("nickname", nickname);
         result.put("email", email);
 
@@ -121,6 +122,17 @@ public class KakaoService {
 
         //회원 삭제(userId를 사용하여 DB에서 회원 삭제)
         userService.deleteUser(userId);
+    }
+
+    public void logout(String access_token) {
+        String host = "https://kapi.kakao.com/v1/user/logout";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + access_token);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(host, HttpMethod.POST, requestEntity, Void.class);
     }
 
 }
