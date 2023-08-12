@@ -41,9 +41,8 @@ public class UserService {
         user.setNickname(newNickname);
         userRepository.save(user);
 
-        // 변경된 정보를 응답에 포함시키기 위한 처리
+        // 변경된 정보를 응답값 포함
         Map<String, Object> responseData = new HashMap<>();
-        responseData.put("user_id", user.getUserId());
         responseData.put("newNickname", newNickname);
 
 
