@@ -3,8 +3,8 @@ package com.example.water.domain.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,11 +34,20 @@ public class UserService {
     public User findByEmail(String email) { return userRepository.findByEmail(email);
     }
 
-    public void updateNickname(Map<String, Object> userInfo, String newNickname){
+    public Map<String, Object> updateNickname(Map<String, Object> userInfo, String newNickname){
         String email = (String) userInfo.get("email");
         User user = userRepository.findByEmail(email);
+
         user.setNickname(newNickname);
-        userRepository.save(user); // 수정된 User 객체를 저장
+        userRepository.save(user);
+
+        // 변경된 정보를 응답에 포함시키기 위한 처리
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("user_id", user.getUserId());
+        responseData.put("newNickname", newNickname);
+
+
+        return responseData;
 
     }
 }
