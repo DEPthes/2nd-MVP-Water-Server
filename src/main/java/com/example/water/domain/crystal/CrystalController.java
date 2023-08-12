@@ -24,7 +24,6 @@ public class CrystalController {
     public ResponseEntity<BaseResponse<List<Map<String, Object>>>> getAllCrystal(@RequestParam("access_token") String access_token) {
         try {
             Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
-
             Long userId= (Long) userInfo.get("user_id");
             List<Map<String, Object>> crystalResponses = crystalService.getCrystalResponses(userId);
 
@@ -36,23 +35,13 @@ public class CrystalController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BaseResponse<Map<String, Object>>> getAllComment(@RequestParam("access_token") String access_token, @PathVariable("id") Long id){
+    public ResponseEntity<BaseResponse<List<Map<String, Object>>>> getAllComment(@RequestParam("access_token") String access_token, @PathVariable("id") Long id){
         try {
-            // 카카오 로그인 토큰 값의 이메일을 사용하여 user_id 조회
             Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
-            String idStr = (String) userInfo.get("id");
-            Long userId = Long.parseLong(idStr);
+            Long userId= (Long) userInfo.get("user_id");
+            List<Map<String, Object>> commentResponses = commentService.getCommentResponses(userId, id);
 
-            // user_id, crystal_id에 대한 Comment 객체 조회
-            List<Map<String, Object>> commentResponses = commentService.getComment(userId, id);
-
-            // 응답 데이터 구성
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("comment_list", commentResponses);
-
-            // 응답 반환
-            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, responseData));
-
+            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, commentResponses));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "모든 답변 조회에 실패했습니다."));

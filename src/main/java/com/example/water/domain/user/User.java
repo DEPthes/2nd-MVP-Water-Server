@@ -6,10 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.*;
 
@@ -42,6 +40,5 @@ public class User {
 
     @OneToMany(mappedBy = "userId")
     private List<Crystal> crystals = new ArrayList<>();
-
 
 }
