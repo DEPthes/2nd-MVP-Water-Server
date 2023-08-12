@@ -41,4 +41,7 @@ public class User {
     @OneToMany(mappedBy = "userId")
     private List<Crystal> crystals = new ArrayList<>();
 
+    public void setNickname(String newNickname) {
+        this.nickname=newNickname;
+    }
 }
