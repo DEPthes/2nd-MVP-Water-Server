@@ -23,16 +23,12 @@ public class UserService {
         return savedUser.getUserId();
     }
 
-    public User getUserById(Long userId) {
-        return userRepository.getById(userId);
-    }
-
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
 
-    public boolean existsEmail(String email) {
-        return userRepository.existsByEmail(email);
+
+    public User findByEmail(String email) { return userRepository.findByEmail(email);
     }
 }
 

@@ -38,10 +38,10 @@ public class User {
     private String image;
 
     @OneToMany(mappedBy = "userId")
-    private List<Comment> comments = new ArrayList();
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "userId")
-    private List<Crystal> crystals = new ArrayList();
+    private List<Crystal> crystals = new ArrayList<>();
 
 
 }
