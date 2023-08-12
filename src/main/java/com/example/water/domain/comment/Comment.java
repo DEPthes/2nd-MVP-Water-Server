@@ -32,7 +32,7 @@ public class Comment {
     private Crystal crystalId;
 
     @ManyToOne
-    @JoinColumn(name="userID")
+    @JoinColumn(name="userId")
     private User userId;
 
     @Column(name="content")
