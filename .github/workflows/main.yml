@@ -2,9 +2,9 @@ name: water server CI/CD
 
 on:
   push:
-    branches: [ master ]
+    branches: [ fix/#23_ec2_error ]
   pull_request:
-    branches: [ master ]
+    branches: [ fix/#23_ec2_error ]
 
 env:
   S3_BUCKET_NAME: water-mvp
@@ -32,7 +32,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build -x test
+        run: ./gradlew clean build
 
       # 디렉토리 생성
       - name: Make Directory
