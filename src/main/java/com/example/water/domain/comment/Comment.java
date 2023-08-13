@@ -1,5 +1,6 @@
 package com.example.water.domain.comment;
 
+import com.example.water.domain.comment.dto.request.CommentRequest;
 import com.example.water.domain.crystal.Crystal;
 import com.example.water.domain.emotion.Emotion;
 import com.example.water.domain.user.User;
@@ -20,16 +21,15 @@ import java.time.LocalDate;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="diaryId")
-    private Long diaryId;
+    @Column(name="commentId")
+    private Long commentId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emotionId", referencedColumnName="emotionId")
     private Emotion emotionId;
 
-    @ManyToOne
-    @JoinColumn(name="crystalId")
-    private Crystal crystalId;
+    @Column(name="myCrystalCount")
+    private Long myCrystalCount;
 
     @ManyToOne
     @JoinColumn(name="userID")
@@ -40,4 +40,14 @@ public class Comment {
 
     @Column(name="date")
     private LocalDate date;
+
+    public static Comment of(Emotion emotionId, Long myCrystalCount, User userId, String content) {
+        return Comment.builder()
+                .emotionId(emotionId)
+                .myCrystalCount(myCrystalCount)
+                .userId(userId)
+                .content(content)
+                .date(LocalDate.now())
+                .build();
+    }
 }
