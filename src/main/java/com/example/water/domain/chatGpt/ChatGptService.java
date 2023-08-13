@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import io.github.flashvayne.chatgpt.service.ChatgptService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ChatGptService {
+
+    // 라이브러리 제공 서비스
+    private final ChatgptService chatgptService;
     @Value("${GPT_TOKEN}")
     private String apiKey;
     private final ObjectMapper objectMapper = new ObjectMapper()
@@ -42,7 +46,7 @@ public class ChatGptService {
                 ChatGptConfig.CHAT_MODEL,
                 ChatGptConfig.MAX_TOKEN,
                 ChatGptConfig.TEMPERATURE,
-                ChatGptConfig.STREAM,
+                ChatGptConfig.STREAM_TRUE,
                 messages
                 //ChatGptConfig.TOP_P
         );
@@ -54,5 +58,11 @@ public class ChatGptService {
                 .retrieve()
                 .bodyToFlux(String.class);
         return eventStream;
+    }
+
+    // 단답 답변
+    public String getChatResponse(String prompt) {
+        // ChatGPT 에게 질문을 던집니다.
+        return chatgptService.sendMessage(prompt);
     }
 }

@@ -21,7 +21,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 @Slf4j
 public class ChatGptController {
-    private final ChatGptService aaService;
+    private final ChatGptService chatGptService;
 
     @PostMapping(value="ask-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> ask(Locale locale,
@@ -29,10 +29,18 @@ public class ChatGptController {
                             HttpServletResponse response,
                             @RequestBody ChatGptQuestionRequest chatGptQuestionRequest){
         try {
-            return aaService.ask(chatGptQuestionRequest);
+            return chatGptService.ask(chatGptQuestionRequest);
         }catch (JsonProcessingException je){
             log.error(je.getMessage());
             return Flux.empty();
         }
+    }
+
+    // 단답 테스트
+    // https://yjkim-dev.tistory.com/56
+    @PostMapping("/simple")
+    public String test(@RequestBody String question) {
+        return chatGptService.getChatResponse(question);
+        //\n\nAs an AI language model, I don't have feelings, but I'm functioning well. Thank you for asking. How can I assist you today?
     }
 }
