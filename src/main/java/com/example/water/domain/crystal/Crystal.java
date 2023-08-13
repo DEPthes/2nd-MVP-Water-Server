@@ -39,4 +39,12 @@ public class Crystal {
     @OneToMany(mappedBy = "crystalId")
     private List<Comment> comments = new ArrayList<>();
 
+    public static Crystal of(User userId, Long red, Long green, Long blue) {
+        return Crystal.builder()
+                .userId(userId)
+                .red(red)
+                .green(green)
+                .blue(blue)
+                .build();
+    }
 }
