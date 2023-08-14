@@ -1,6 +1,6 @@
 package com.example.water.global.auth;
 import com.example.water.domain.user.User;
-import com.example.water.domain.user.UserDto;
+import com.example.water.domain.user.DTO.UserDto;
 import com.example.water.domain.user.UserService;
 import com.example.water.global.BaseResponse;
 import com.example.water.global.ErrorCode;
