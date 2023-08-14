@@ -15,5 +15,4 @@ public class CrystalResponseDTO {
         this.green = green;
         this.blue = blue;
     }
-
 }

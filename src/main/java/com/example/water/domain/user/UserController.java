@@ -1,5 +1,6 @@
 package com.example.water.domain.user;
 
+import com.example.water.domain.user.DTO.MypageDTO;
 import com.example.water.global.BaseResponse;
 import com.example.water.global.ErrorCode;
 import com.example.water.global.SuccessCode;
@@ -9,9 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +19,21 @@ public class UserController {
 
     private final UserService userService;
     private final KakaoService kakaoService;
+
+    @GetMapping("/")
+    public ResponseEntity<BaseResponse<MypageDTO>> mypage(@RequestHeader("Authorization") String authorizationHeader){
+        try {
+            String access_token = authorizationHeader.substring(7);
+
+            Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
+            MypageDTO mypageResponse = userService.getMypage(userInfo);
+
+            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, mypageResponse));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "마이페이지 조회 실패"));
+        }
+    }
 
     @PatchMapping("/nickname")
     public ResponseEntity<BaseResponse<Map<String,Object>>> updateNickname(
@@ -30,9 +44,9 @@ public class UserController {
             Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
 
             String newNickname = requestBody.get("newNickname");
-            Map<String, Object> responseData = userService.updateNickname(userInfo, newNickname);
+            Map<String, Object> updateNicknameResponse = userService.updateNickname(userInfo, newNickname);
 
-            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS,responseData));
+            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS,updateNicknameResponse));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "닉네임 변경 실패"));

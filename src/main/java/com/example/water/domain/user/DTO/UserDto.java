@@ -1,4 +1,4 @@
-package com.example.water.domain.user;
+package com.example.water.domain.user.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +22,6 @@ public class UserDto {
     static class CreateUserResponse{
         @NotEmpty
         private Long userId;
-
         public CreateUserResponse(Long userId){
             this.userId=userId;
         }
