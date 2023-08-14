@@ -20,20 +20,19 @@ import java.time.LocalDate;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="diaryId")
-    private Long diaryId;
+    @Column(name="commentId")
+    private Long commentId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emotionId", referencedColumnName="emotionId")
     private Emotion emotionId;
 
     @ManyToOne
-    @JoinColumn(name="crystalId")
-    private Crystal crystalId;
-
-    @ManyToOne
     @JoinColumn(name="userId")
     private User userId;
+
+    @Column(name="myCrystalCount")
+    private Long myCrystalCount;
 
     @Column(name="content")
     private String content;

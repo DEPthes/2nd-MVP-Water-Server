@@ -1,5 +1,6 @@
 package com.example.water.global.auth;
 
+import com.example.water.domain.user.User;
 import com.example.water.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -80,8 +81,7 @@ public class KakaoService {
             e.printStackTrace();
             return null; // 파싱 오류 처리
         }
-
-        String id = obj.get("id").toString();
+        Long id = Long.valueOf(obj.get("id").toString());
         String nickname = ((JSONObject) obj.get("properties")).get("nickname").toString();
         String email = ((JSONObject) obj.get("kakao_account")).get("email").toString();
         String profileImage = default_image;
@@ -93,15 +93,18 @@ public class KakaoService {
             }
         }
 
+        User user = userService.findByEmail(email);
+
         Map<String, Object> result = new HashMap<>();
-        result.put("id", id);
+
         result.put("nickname", nickname);
         result.put("email", email);
 
-        if(profileImage==null || profileImage==default_image){
-            result.put("profileImage",default_image);
-        }
-        else {result.put("profileImage", profileImage);}
+        if (user != null) { result.put("user_id", user.getUserId()); }
+
+        if (profileImage == null || profileImage.equals(default_image)) {
+            result.put("profileImage", default_image);
+        } else { result.put("profileImage", profileImage); }
 
         return result;
     }
@@ -119,6 +122,17 @@ public class KakaoService {
 
         //회원 삭제(userId를 사용하여 DB에서 회원 삭제)
         userService.deleteUser(userId);
+    }
+
+    public void logout(String access_token) {
+        String host = "https://kapi.kakao.com/v1/user/logout";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + access_token);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(host, HttpMethod.POST, requestEntity, Void.class);
     }
 
 }
