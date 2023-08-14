@@ -1,15 +1,12 @@
 package com.example.water.domain.user.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 @Builder
+@AllArgsConstructor
 @Data
 public class UserDto {
 
@@ -26,5 +23,4 @@ public class UserDto {
             this.userId=userId;
         }
     }
-
 }
