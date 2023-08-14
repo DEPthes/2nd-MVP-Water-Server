@@ -1,10 +1,11 @@
 package com.example.water.domain.user.DTO;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
+@Builder
 @AllArgsConstructor
 public class MypageResponseDTO {
     private int status;
