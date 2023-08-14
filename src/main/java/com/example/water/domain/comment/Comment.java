@@ -1,6 +1,5 @@
 package com.example.water.domain.comment;
 
-import com.example.water.domain.comment.dto.request.CommentRequest;
 import com.example.water.domain.crystal.Crystal;
 import com.example.water.domain.emotion.Emotion;
 import com.example.water.domain.user.User;
@@ -28,12 +27,12 @@ public class Comment {
     @JoinColumn(name = "emotionId", referencedColumnName="emotionId")
     private Emotion emotionId;
 
+    @ManyToOne
+    @JoinColumn(name="userId")
+    private User userId;
+
     @Column(name="myCrystalCount")
     private Long myCrystalCount;
-
-    @ManyToOne
-    @JoinColumn(name="userID")
-    private User userId;
 
     @Column(name="content")
     private String content;

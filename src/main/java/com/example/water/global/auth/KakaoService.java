@@ -1,11 +1,11 @@
 package com.example.water.global.auth;
 
+import com.example.water.domain.user.User;
 import com.example.water.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 
 import org.json.simple.parser.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +27,8 @@ public class KakaoService {
     private String CLIENT_SECRET;
     @Value("${kakao.redirect.url}")
     private String REDIRECT_URL;
+
+    private final String default_image = "https://media.discordapp.net/attachments/1133490407649591316/1138778386492301463/-04.png?width=662&height=662"; // 기본 이미지 URL 설정
 
     public String getToken(String code) throws IOException, ParseException {
         String host = "https://kauth.kakao.com/oauth/token";
@@ -57,7 +59,7 @@ public class KakaoService {
         return access_token;
     }
 
-    public Map<String, Object> getUserInfo(String access_token, String default_image) throws IOException {
+    public Map<String, Object> getUserInfo(String access_token){
         String host = "https://kapi.kakao.com/v2/user/me";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + access_token);
@@ -79,8 +81,7 @@ public class KakaoService {
             e.printStackTrace();
             return null; // 파싱 오류 처리
         }
-
-        String id = obj.get("id").toString();
+        Long id = Long.valueOf(obj.get("id").toString());
         String nickname = ((JSONObject) obj.get("properties")).get("nickname").toString();
         String email = ((JSONObject) obj.get("kakao_account")).get("email").toString();
         String profileImage = default_image;
@@ -92,11 +93,18 @@ public class KakaoService {
             }
         }
 
+        User user = userService.findByEmail(email);
+
         Map<String, Object> result = new HashMap<>();
-        result.put("id", id);
+
         result.put("nickname", nickname);
         result.put("email", email);
-        result.put("profileImage", profileImage);
+
+        if (user != null) { result.put("user_id", user.getUserId()); }
+
+        if (profileImage == null || profileImage.equals(default_image)) {
+            result.put("profileImage", default_image);
+        } else { result.put("profileImage", profileImage); }
 
         return result;
     }
@@ -114,6 +122,17 @@ public class KakaoService {
 
         //회원 삭제(userId를 사용하여 DB에서 회원 삭제)
         userService.deleteUser(userId);
+    }
+
+    public void logout(String access_token) {
+        String host = "https://kapi.kakao.com/v1/user/logout";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + access_token);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(host, HttpMethod.POST, requestEntity, Void.class);
     }
 
 }
