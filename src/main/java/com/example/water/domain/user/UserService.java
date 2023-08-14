@@ -70,11 +70,15 @@ public class UserService {
         Comment firstComment = commentRepository.findFirstByUserIdOrderByDate(user);
         LocalDate firstCommentDate = (firstComment != null) ? firstComment.getDate() : LocalDate.now();
         LocalDate currentDate = LocalDate.now();
-        long sinceDate = ChronoUnit.DAYS.between(firstCommentDate, currentDate);
+        long sinceDate = (firstComment != null) ? ChronoUnit.DAYS.between(firstCommentDate, currentDate) : 0;
 
         // MypageDTO 생성 & 반환
-        return new MypageDTO(crystalCount, sinceDate, user.getNickname(), user.getImage());
-
+        return MypageDTO.builder()
+                .crystalCount(crystalCount)
+                .sinceDate(sinceDate)
+                .nickname(user.getNickname())
+                .image(user.getImage())
+                .build();
     }
 }
 

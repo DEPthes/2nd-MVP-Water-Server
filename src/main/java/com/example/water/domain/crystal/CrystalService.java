@@ -18,14 +18,15 @@ public class CrystalService {
         List<CrystalResponseDTO> crystalResponses = new ArrayList<>();
 
         for (Crystal crystal : crystals) {
-            CrystalResponseDTO dto = new CrystalResponseDTO(
-                    crystal.getCrystalId(),
-                    crystal.getRed(),
-                    crystal.getGreen(),
-                    crystal.getBlue()
-            );
+            CrystalResponseDTO dto = CrystalResponseDTO.builder()
+                    .crystalId(crystal.getCrystalId())
+                    .red(crystal.getRed())
+                    .green(crystal.getGreen())
+                    .blue(crystal.getBlue())
+                    .build();
             crystalResponses.add(dto);
         }
+
         return crystalResponses;
     }
 }
