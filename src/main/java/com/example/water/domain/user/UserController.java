@@ -23,7 +23,7 @@ public class UserController {
 
     @PostMapping("nickname")
     public ResponseEntity<BaseResponse<Map<String,Object>>> updateNickname(
-            @RequestParam("access_token") String authorizationHeader,
+            @RequestParam("Autorization") String authorizationHeader,
             @RequestBody Map<String, String> requestBody) {
         try {
             String access_token=authorizationHeader.substring(7);
