@@ -7,13 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class KakaoController {
@@ -28,6 +30,11 @@ public class KakaoController {
     @Value("${kakao.redirect.url}")
     private String REDIRECT_URL;
 
+    // test
+    @GetMapping("/test")
+    public String test() {
+        return "test!!!";
+    }
 
     @GetMapping("/login")
     public String kakaoLogin() {
@@ -37,15 +44,14 @@ public class KakaoController {
                 "&response_type=code" +
                 "&scope=profile_nickname profile_image account_email";
 
-        return "redirect:"+kakaoLoginUrl;
+        return "redirect:" + kakaoLoginUrl;
     }
 
-    @ResponseBody
     @GetMapping("/kakao")
     public ResponseEntity<BaseResponse<UserDto>> getUI(@RequestParam String code) throws IOException, ParseException {
         String default_image = "https://media.discordapp.net/attachments/1133490407649591316/1138778386492301463/-04.png?width=662&height=662";
         String access_token = kakaoService.getToken(code);
-        Map<String, Object> userInfoMap = kakaoService.getUserInfo(access_token);
+        Map<String, Object> userInfoMap = kakaoService.getUserInfo(access_token, default_image);
         UserDto userInfo = UserDto.builder()
                 .nickname((String) userInfoMap.get("nickname"))
                 .image((String) userInfoMap.get("profileImage"))
@@ -56,10 +62,10 @@ public class KakaoController {
 
         if (!userService.existsEmail(email)) {
             String profileImage = (String) userInfoMap.get("profileImage");
-            if (profileImage == null || profileImage.isEmpty()) {
-                userInfo.setImage(default_image);
-            } else {
+            if (profileImage != null) {
                 userInfo.setImage(profileImage);
+            } else {
+                userInfo.setImage(default_image);
             }
             userService.createUser(userInfo);
         }

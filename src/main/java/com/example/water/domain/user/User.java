@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.*;
 
@@ -36,12 +38,10 @@ public class User {
     private String image;
 
     @OneToMany(mappedBy = "userId")
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList();
 
     @OneToMany(mappedBy = "userId")
-    private List<Crystal> crystals = new ArrayList<>();
+    private List<Crystal> crystals = new ArrayList();
 
-    public void setNickname(String newNickname) {
-        this.nickname=newNickname;
-    }
+
 }
