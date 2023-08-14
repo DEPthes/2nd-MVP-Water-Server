@@ -23,9 +23,10 @@ public class UserController {
 
     @PostMapping("nickname")
     public ResponseEntity<BaseResponse<Map<String,Object>>> updateNickname(
-            @RequestParam("access_token") String access_token,
+            @RequestParam("access_token") String authorizationHeader,
             @RequestBody Map<String, String> requestBody) {
         try {
+            String access_token=authorizationHeader.substring(7);
             Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
 
             String newNickname = requestBody.get("newNickname");
