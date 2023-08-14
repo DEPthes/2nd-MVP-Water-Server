@@ -103,7 +103,6 @@ public class KakaoController {
         BaseResponse<String> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, "로그아웃에 성공했습니다.");
         return ResponseEntity.status(response.getStatus()).body(response);
     }
-
 }
 
 
