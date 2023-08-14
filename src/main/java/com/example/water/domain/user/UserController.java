@@ -21,11 +21,12 @@ public class UserController {
     private final UserService userService;
     private final KakaoService kakaoService;
 
-    @PostMapping("nickname")
+    @PatchMapping("/nickname")
     public ResponseEntity<BaseResponse<Map<String,Object>>> updateNickname(
-            @RequestParam("access_token") String access_token,
+            @RequestHeader("Authorization") String authorizationHeader,
             @RequestBody Map<String, String> requestBody) {
         try {
+            String access_token=authorizationHeader.substring(7);
             Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
 
             String newNickname = requestBody.get("newNickname");
@@ -36,8 +37,5 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "닉네임 변경 실패"));
         }
-
     }
-
-
 }
