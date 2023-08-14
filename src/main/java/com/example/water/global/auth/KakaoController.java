@@ -55,7 +55,6 @@ public class KakaoController {
                 .build();
 
         String email = userInfo.getEmail();
-
         User user = userService.findByEmail(email);
 
         if (user == null) {
@@ -73,8 +72,9 @@ public class KakaoController {
 
     @ResponseBody
     @PostMapping("/exit")
-    public ResponseEntity<BaseResponse<String>> exitKakao(@RequestParam String access_token) {
+    public ResponseEntity<BaseResponse<String>> exitKakao(@RequestHeader("Authorization") String authorizationHeader) {
         try {
+            String access_token=authorizationHeader.substring(7);
             Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
             String email = (String) userInfo.get("email");
 
@@ -82,7 +82,7 @@ public class KakaoController {
 
             Long userId = user.getUserId();
             kakaoService.deleteUser(access_token, userId);
-            BaseResponse<String> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, "계정 탈퇴가 완료되었습니다.");
+            BaseResponse<String> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS);
             return ResponseEntity.ok(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,8 +93,9 @@ public class KakaoController {
 
     @ResponseBody
     @PostMapping("/logout")
-    public ResponseEntity<BaseResponse<String>> logout(@RequestParam String access_token) {
+    public ResponseEntity<BaseResponse<String>> logout(@RequestHeader("Authorization") String authorizationHeader) {
 
+        String access_token=authorizationHeader.substring(7);
         // 카카오 로그아웃 API 호출
         kakaoService.logout(access_token);
 
@@ -102,7 +103,6 @@ public class KakaoController {
         BaseResponse<String> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, "로그아웃에 성공했습니다.");
         return ResponseEntity.status(response.getStatus()).body(response);
     }
-
 }
 
 

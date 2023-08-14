@@ -36,7 +36,4 @@ public class Crystal {
     @Column(name="blue")
     private Long blue;
 
-    @OneToMany(mappedBy = "crystalId")
-    private List<Comment> comments = new ArrayList<>();
-
 }
