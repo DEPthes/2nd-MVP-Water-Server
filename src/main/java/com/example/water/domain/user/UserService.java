@@ -2,7 +2,6 @@ package com.example.water.domain.user;
 
 import com.example.water.domain.comment.Comment;
 import com.example.water.domain.comment.CommentRepository;
-import com.example.water.domain.user.DTO.MypageResponseDTO;
 import com.example.water.domain.user.DTO.UserDto;
 import com.example.water.domain.user.DTO.MypageDTO;
 import lombok.RequiredArgsConstructor;
@@ -80,5 +79,4 @@ public class UserService {
                 .build();
     }
 }
-
 

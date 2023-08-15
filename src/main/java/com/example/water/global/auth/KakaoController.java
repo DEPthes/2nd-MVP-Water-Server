@@ -39,7 +39,7 @@ public class KakaoController {
                 "&response_type=code" +
                 "&scope=profile_nickname profile_image account_email";
 
-        return "redirect:"+kakaoLoginUrl;
+        return "redirect:" + kakaoLoginUrl;
     }
 
     @ResponseBody
@@ -68,6 +68,7 @@ public class KakaoController {
             }
             userService.createUser(userInfo);// 새로운 사용자 정보를 DB에 등록
         }
+        // BaseResponse 객체를 생성하여 JSON 응답 데이터 구성
         BaseResponse<UserDto> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, userInfo);
         return ResponseEntity.status(response.getStatus()).body(response);
     }

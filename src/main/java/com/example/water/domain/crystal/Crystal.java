@@ -1,6 +1,5 @@
 package com.example.water.domain.crystal;
 
-import com.example.water.domain.comment.Comment;
 import com.example.water.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 @Table(name="CRYSTAL")
@@ -36,4 +34,12 @@ public class Crystal {
     @Column(name="blue")
     private Long blue;
 
+    public static Crystal of(User userId, Long red, Long green, Long blue) {
+        return Crystal.builder()
+                .userId(userId)
+                .red(red)
+                .green(green)
+                .blue(blue)
+                .build();
+    }
 }
