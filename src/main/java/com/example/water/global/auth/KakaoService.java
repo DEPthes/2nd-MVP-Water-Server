@@ -97,10 +97,10 @@ public class KakaoService {
 
         Map<String, Object> result = new HashMap<>();
 
-        result.put("nickname", nickname);
-        result.put("email", email);
+        result.put("nickname", user.getNickname());
+        result.put("email", user.getEmail());
 
-        if (user != null) { result.put("user_id", user.getUserId()); }
+        if (user != null) { result.put("userId", user.getUserId()); }
 
         if (profileImage == null || profileImage.equals(default_image)) {
             result.put("profileImage", default_image);
