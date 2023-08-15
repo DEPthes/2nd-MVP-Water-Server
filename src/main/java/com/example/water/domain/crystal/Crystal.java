@@ -36,8 +36,9 @@ public class Crystal {
     @Column(name="blue")
     private Long blue;
 
-    @OneToMany(mappedBy = "crystalId")
-    private List<Comment> comments = new ArrayList<>();
+    // 연관 끊기
+//    @OneToMany(mappedBy = "crystalId")
+//    private List<Comment> comments = new ArrayList<>();
 
     public static Crystal of(User userId, Long red, Long green, Long blue) {
         return Crystal.builder()
