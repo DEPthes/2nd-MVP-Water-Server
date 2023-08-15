@@ -52,6 +52,7 @@ public class KakaoController {
                 .nickname((String) userInfoMap.get("nickname"))
                 .image((String) userInfoMap.get("profileImage"))
                 .email((String) userInfoMap.get("email"))
+                .token(access_token)
                 .build();
 
         String email = userInfo.getEmail();
