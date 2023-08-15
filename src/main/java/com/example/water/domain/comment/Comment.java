@@ -23,6 +23,12 @@ public class Comment {
     @Column(name="commentId")
     private Long commentId;
 
+    @Column(name="commentContent")
+    private String commentContent;
+
+    @Column(name="myCrystalCount")
+    private Long myCrystalCount;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emotionId", referencedColumnName="emotionId")
     private Emotion emotionId;
@@ -31,21 +37,15 @@ public class Comment {
     @JoinColumn(name="userId")
     private User userId;
 
-    @Column(name="myCrystalCount")
-    private Long myCrystalCount;
-
-    @Column(name="content")
-    private String content;
-
     @Column(name="date")
     private LocalDate date;
 
-    public static Comment of(Emotion emotionId, Long myCrystalCount, User userId, String content) {
+    public static Comment of(String commentContent, Long myCrystalCount, Emotion emotionId, User userId) {
         return Comment.builder()
-                .emotionId(emotionId)
+                .commentContent(commentContent)
                 .myCrystalCount(myCrystalCount)
+                .emotionId(emotionId)
                 .userId(userId)
-                .content(content)
                 .date(LocalDate.now())
                 .build();
     }
