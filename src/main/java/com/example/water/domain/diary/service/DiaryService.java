@@ -19,14 +19,14 @@ public class DiaryService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    public DiaryResponse writeDiary(DiaryRequest diary) {
+    public DiaryResponse writeDiary(Long userId, DiaryRequest diary) {
         String diaryContent = diary.getDiary();
         log.info("diaryContent = {}", diaryContent);
 
         Long emotionId = deterEmotion(diaryContent);
         log.info("emotionId = {}", emotionId);
 
-        Long myCrystalCount = calcMyCrystalCount();
+        Long myCrystalCount = calcMyCrystalCount(userId);
         log.info("myCrystalCount = {}" + myCrystalCount);
 
         return DiaryResponse.of(diaryContent, LocalDateTime.now(), emotionId, myCrystalCount);
@@ -47,8 +47,8 @@ public class DiaryService {
     }
 
     // myCrystalCount 계산
-    public Long calcMyCrystalCount() {
-        User user = userRepository.findById(1L).orElseThrow();
+    public Long calcMyCrystalCount(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
         Long countMyComment = commentRepository.countByUserId(user);
         Long myCrystalCount = (countMyComment - 1) / 20 + 1;
 
