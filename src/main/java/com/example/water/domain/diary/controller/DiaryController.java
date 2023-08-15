@@ -5,10 +5,7 @@ import com.example.water.domain.diary.dto.response.DiaryResponse;
 import com.example.water.domain.diary.dto.request.DiaryRequest;
 import com.example.water.global.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.example.water.global.SuccessCode.WRITE_DIARY_SUCCESS;
 
@@ -17,6 +14,11 @@ import static com.example.water.global.SuccessCode.WRITE_DIARY_SUCCESS;
 @RequiredArgsConstructor
 public class DiaryController {
     private final DiaryService diaryService;
+
+    @GetMapping()
+    public String test() {
+        return "eerr";
+    }
 
     // 일기 작성
     @PostMapping("")

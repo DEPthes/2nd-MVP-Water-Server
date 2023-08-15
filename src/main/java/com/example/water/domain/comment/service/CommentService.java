@@ -146,7 +146,8 @@ public class CommentService {
         Comment comment = Comment.of(emotion, myCrystalCount, user, saveRequest.getComment());
         commentRepository.save(comment);
 
-        Long countMyComment = commentRepository.countByUserId(1L);
+        // ???????
+        Long countMyComment = commentRepository.countByUserId(user);
         // 10개째면 결정 저장
         if (countMyComment == 10) {
 

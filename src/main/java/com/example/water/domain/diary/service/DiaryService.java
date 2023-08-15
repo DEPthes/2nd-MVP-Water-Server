@@ -3,53 +3,54 @@ package com.example.water.domain.diary.service;
 import com.example.water.domain.comment.repository.CommentRepository;
 import com.example.water.domain.diary.dto.response.DiaryResponse;
 import com.example.water.domain.diary.dto.request.DiaryRequest;
-import com.example.water.domain.emotion.Emotion;
-import com.example.water.domain.emotion.repository.EmotionRepository;
+import com.example.water.domain.user.User;
+import com.example.water.domain.user.UserRepository;
 import io.github.flashvayne.chatgpt.service.ChatgptService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DiaryService {
     private final ChatgptService chatgptService;
-    private final EmotionRepository emotionRepository;
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
     public DiaryResponse writeDiary(DiaryRequest diary) {
         String diaryContent = diary.getDiary();
+        log.info("diaryContent = {}", diaryContent);
 
         Long emotionId = deterEmotion(diaryContent);
+        log.info("emotionId = {}", emotionId);
 
         Long myCrystalCount = calcMyCrystalCount();
+        log.info("myCrystalCount = {}" + myCrystalCount);
 
         return DiaryResponse.of(diaryContent, LocalDateTime.now(), emotionId, myCrystalCount);
     }
 
     // 일기 감정 판별
     public Long deterEmotion(String diary) {
-        String emotion = chatgptService.sendMessage(diary);
+        String deterEmotionPrompt = "너는 감정을 판단하는 로봇이야. 다음 예문이 \"분노, 슬픔, 불안, 외로움, 짜증, 무력감, 수치심, 증오, 스트레스, 불만\" 10 가지 감정 중 어느것에 해당하는지 판단해야 해. 그 감정의 순서를 답해줘.\n" +
+                "예를들어 만약 슬픔이라면 2를 출력하면 돼. 부가 설명 없이 숫자만 출력해.\n" +
+                "\n" + "\"" + diary + "\"";
 
-        List<Emotion> allEmotion = emotionRepository.findAll();
+        String emotionIdStr = chatgptService.sendMessage(deterEmotionPrompt);
+        // 띄어쓰기 들어가면 안됨
+        String trimmedEmotionIdStr = emotionIdStr.trim();
 
-        Long emotionId = -1L;
-
-        for (Emotion e : allEmotion) {
-            // gpt가 판별한 감정값에 db에 있는 값 포함된 경우
-            if (emotion.contains(e.getFeeling())) {
-                emotionId = e.getEmotionId();
-            }
-        }
+        Long emotionId = Long.parseLong(trimmedEmotionIdStr);
         return emotionId;
     }
 
     // myCrystalCount 계산
     public Long calcMyCrystalCount() {
-        Long countMyComment = commentRepository.countByUserId(1L);
-        int length = (int)(Math.log10(countMyComment)+1);
-        Long myCrystalCount = Long.valueOf(length);
+        User user = userRepository.findById(1L).orElseThrow();
+        Long countMyComment = commentRepository.countByUserId(user);
+        Long myCrystalCount = (countMyComment - 1) / 20 + 1;
 
         return myCrystalCount;
     }
