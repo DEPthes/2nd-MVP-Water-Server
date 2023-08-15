@@ -61,8 +61,8 @@ public class CommentService {
         return new HttpEntity<>(chatGptRequest, httpHeaders);
     }
 
-    // 답안 stream
-    public Flux<String> comment(CommentRequest commentRequest) throws JsonProcessingException {
+    // 위로 답안 stream
+    public Flux<String> comfortComment(CommentRequest commentRequest) throws JsonProcessingException {
 
         WebClient client = WebClient.builder()
                 .baseUrl(ChatGptConfig.CHAT_URL)
@@ -71,7 +71,45 @@ public class CommentService {
                 .build();
 
 
-        String content = commentRequest.getDiary() + "위 내용에 대한 위로를 해줘. 한줄로 짧게 해줘.";
+        String content = commentRequest.getDiary() + "위 상황에 대해서 다정한 말투로 편을 들어주는 위로를 해줘. 편지쓰는 것처럼 하지 마. 처음에 인사하지마. 네가 ChatGPT인 티를 내지 말고, 사람처럼 말해. 반말은 하지마. 끝에 감사인사도 하지마. 세줄로 답변해줘.";
+
+
+        List<ChatGptMessage> messages = new ArrayList<>();
+        messages.add(ChatGptMessage.builder()
+                .role(ChatGptConfig.ROLE)
+                .content(content)
+                .build());
+        ChatGptRequest chatGptRequest = new ChatGptRequest(
+                ChatGptConfig.CHAT_MODEL,
+                ChatGptConfig.MAX_TOKEN,
+                ChatGptConfig.TEMPERATURE,
+                ChatGptConfig.STREAM_TRUE,
+                messages
+                //ChatGptConfig.TOP_P
+        );
+        String requestValue = objectMapper.writeValueAsString(chatGptRequest);
+
+        Flux<String> eventStream = client.post()
+                .bodyValue(requestValue)
+                .accept(MediaType.TEXT_EVENT_STREAM)
+                .retrieve()
+                .bodyToFlux(String.class);
+
+        // 답안
+        return eventStream;
+    }
+
+    // 편들기 답안 stream
+    public Flux<String> mysideComment(CommentRequest commentRequest) throws JsonProcessingException {
+
+        WebClient client = WebClient.builder()
+                .baseUrl(ChatGptConfig.CHAT_URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(ChatGptConfig.AUTHORIZATION, ChatGptConfig.BEARER + apiKey)
+                .build();
+
+
+        String content = commentRequest.getDiary() + "위 상황에 대해서 내 편을 들어주고, 상대방 욕해줘. 상대방이 잘못했다고 말해줘. 편지쓰는 것처럼 하지 마. 처음에 인사하지마. 네가 ChatGPT인 티를 내지 말고, 사람처럼 말해. 반말은 하지마. 끝에 감사인사도 하지마. 세줄로 답변해줘.";
 
 
         List<ChatGptMessage> messages = new ArrayList<>();

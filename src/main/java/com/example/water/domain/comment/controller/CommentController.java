@@ -22,12 +22,26 @@ public class CommentController {
 
     // 위로 답변 받기
     @PostMapping(value="comfort", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> comment(Locale locale,
+    public Flux<String> comfortComment(Locale locale,
                             HttpServletRequest request,
                             HttpServletResponse response,
                             @RequestBody CommentRequest commentRequest){
         try {
-            return commentService.comment(commentRequest);
+            return commentService.comfortComment(commentRequest);
+        }catch (JsonProcessingException je){
+            log.error(je.getMessage());
+            return Flux.empty();
+        }
+    }
+
+    // 편들기 답변 받기
+    @PostMapping(value="myside", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<String> mysideComment(Locale locale,
+                                HttpServletRequest request,
+                                HttpServletResponse response,
+                                @RequestBody CommentRequest commentRequest){
+        try {
+            return commentService.mysideComment(commentRequest);
         }catch (JsonProcessingException je){
             log.error(je.getMessage());
             return Flux.empty();
