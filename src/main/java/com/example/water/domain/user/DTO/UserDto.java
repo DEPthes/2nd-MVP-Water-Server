@@ -14,13 +14,16 @@ public class UserDto {
     private String email;
     private String nickname;
     private String image;
+    private String token;
 
     @Data
     static class CreateUserResponse{
         @NotEmpty
         private Long userId;
+
         public CreateUserResponse(Long userId){
             this.userId=userId;
         }
     }
+
 }

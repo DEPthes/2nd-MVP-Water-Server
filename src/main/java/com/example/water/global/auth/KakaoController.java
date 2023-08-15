@@ -31,7 +31,6 @@ public class KakaoController {
     @Value("${kakao.redirect.url}")
     private String REDIRECT_URL;
 
-
     @GetMapping("/login")
     public String kakaoLogin() {
         String kakaoLoginUrl = "https://kauth.kakao.com/oauth/authorize" +
@@ -50,9 +49,11 @@ public class KakaoController {
         String access_token = kakaoService.getToken(code);
         Map<String, Object> userInfoMap = kakaoService.getUserInfo(access_token);
         UserDto userInfo = UserDto.builder()
+                .userId((Long) userInfoMap.get("userId"))
                 .nickname((String) userInfoMap.get("nickname"))
                 .image((String) userInfoMap.get("profileImage"))
                 .email((String) userInfoMap.get("email"))
+                .token(access_token)
                 .build();
 
         String email = userInfo.getEmail();

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.*;
 
 @Service
@@ -58,13 +57,13 @@ public class UserService {
 
 
     public MypageDTO getMypage(Map<String, Object> userInfo) {
-        Long userId = (Long) userInfo.get("user_id");
+        Long userId = (Long) userInfo.get("userId");
         Optional<User> userOptional = userRepository.findById(userId);
 
-        User user = userOptional.orElse(null);
+        User user = userOptional.get();
 
         // 사용자의 크리스탈 count 가져오기
-        Long crystalCount = (long) user.getCrystals().size();
+        Long crystalCount = user.getCrystals() != null ? (long) user.getCrystals().size() : 0L;
 
         // 첫 content 이후 날짜 수 계산
         Comment firstComment = commentRepository.findFirstByUserIdOrderByDate(user);

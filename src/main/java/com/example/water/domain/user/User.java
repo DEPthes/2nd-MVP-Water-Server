@@ -35,10 +35,10 @@ public class User {
     @Column(name="image")
     private String image;
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.REMOVE)
     private List<Crystal> crystals = new ArrayList<>();
 
     public void setNickname(String newNickname) {
