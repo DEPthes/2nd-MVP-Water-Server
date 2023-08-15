@@ -39,4 +39,14 @@ public class Comment {
 
     @Column(name="date")
     private LocalDate date;
+
+    public static Comment of(Emotion emotionId, Long myCrystalCount, User userId, String content) {
+        return Comment.builder()
+                .emotionId(emotionId)
+                .myCrystalCount(myCrystalCount)
+                .userId(userId)
+                .content(content)
+                .date(LocalDate.now())
+                .build();
+    }
 }
