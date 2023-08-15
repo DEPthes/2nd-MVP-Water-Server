@@ -1,10 +1,11 @@
-package com.example.water.domain.user;
+package com.example.water.domain.user.controller;
 
-import com.example.water.domain.user.DTO.MypageDTO;
+import com.example.water.domain.user.service.UserService;
+import com.example.water.domain.user.dto.Mypage;
 import com.example.water.global.BaseResponse;
 import com.example.water.global.ErrorCode;
 import com.example.water.global.SuccessCode;
-import com.example.water.global.auth.KakaoService;
+import com.example.water.global.auth.service.KakaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,12 @@ public class UserController {
     private final KakaoService kakaoService;
 
     @GetMapping("/")
-    public ResponseEntity<BaseResponse<MypageDTO>> mypage(@RequestHeader("Authorization") String authorizationHeader){
+    public ResponseEntity<BaseResponse<Mypage>> mypage(@RequestHeader("Authorization") String authorizationHeader){
         try {
             String access_token = authorizationHeader.substring(7);
 
             Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
-            MypageDTO mypageResponse = userService.getMypage(userInfo);
+            Mypage mypageResponse = userService.getMypage(userInfo);
 
             return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, mypageResponse));
         } catch (Exception e) {

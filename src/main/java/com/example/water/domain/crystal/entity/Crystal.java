@@ -1,6 +1,6 @@
-package com.example.water.domain.crystal;
+package com.example.water.domain.crystal.entity;
 
-import com.example.water.domain.user.User;
+import com.example.water.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

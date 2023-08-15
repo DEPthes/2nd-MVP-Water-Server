@@ -1,16 +1,15 @@
-package com.example.water.domain.comment.DTO;
+package com.example.water.domain.comment.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Builder
 @AllArgsConstructor
-public class CommentResponseDTO {
+public class CommentResponse {
     private Long commentId;
     private Long userId;
     private Long myCrystalCount;

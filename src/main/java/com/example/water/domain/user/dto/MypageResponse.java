@@ -1,4 +1,4 @@
-package com.example.water.domain.user.DTO;
+package com.example.water.domain.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class MypageResponseDTO {
+public class MypageResponse {
     private int status;
     private String message;
-    private MypageDTO data;
+    private Mypage data;
 
 }

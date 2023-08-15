@@ -1,9 +1,11 @@
-package com.example.water.domain.user;
+package com.example.water.domain.user.service;
 
-import com.example.water.domain.comment.Comment;
-import com.example.water.domain.comment.CommentRepository;
-import com.example.water.domain.user.DTO.UserDto;
-import com.example.water.domain.user.DTO.MypageDTO;
+import com.example.water.domain.comment.entity.Comment;
+import com.example.water.domain.comment.repository.CommentRepository;
+import com.example.water.domain.user.dto.UserResponse;
+import com.example.water.domain.user.dto.Mypage;
+import com.example.water.domain.user.entity.User;
+import com.example.water.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
-    public Long createUser(UserDto request) {
+    public Long createUser(UserResponse request) {
         User user = User.builder()
                 .email(request.getEmail())
                 .nickname(request.getNickname())
@@ -55,7 +57,7 @@ public class UserService {
     }
 
 
-    public MypageDTO getMypage(Map<String, Object> userInfo) {
+    public Mypage getMypage(Map<String, Object> userInfo) {
         Long userId = (Long) userInfo.get("userId");
         Optional<User> userOptional = userRepository.findById(userId);
 
@@ -71,7 +73,7 @@ public class UserService {
         long sinceDate = (firstComment != null) ? ChronoUnit.DAYS.between(firstCommentDate, currentDate) : 0;
 
         // MypageDTO 생성 & 반환
-        return MypageDTO.builder()
+        return Mypage.builder()
                 .crystalCount(crystalCount)
                 .sinceDate(sinceDate)
                 .nickname(user.getNickname())

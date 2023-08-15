@@ -1,4 +1,4 @@
-package com.example.water.domain.user.DTO;
+package com.example.water.domain.user.dto;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 @AllArgsConstructor
 @Data
-public class UserDto {
+public class UserResponse {
 
     private Long userId;
     private String email;
@@ -20,7 +20,6 @@ public class UserDto {
     static class CreateUserResponse{
         @NotEmpty
         private Long userId;
-
         public CreateUserResponse(Long userId){
             this.userId=userId;
         }

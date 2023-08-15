@@ -1,7 +1,7 @@
-package com.example.water.global.auth;
+package com.example.water.global.auth.service;
 
-import com.example.water.domain.user.User;
-import com.example.water.domain.user.UserService;
+import com.example.water.domain.user.entity.User;
+import com.example.water.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 

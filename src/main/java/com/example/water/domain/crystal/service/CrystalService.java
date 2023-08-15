@@ -1,8 +1,9 @@
-package com.example.water.domain.crystal;
+package com.example.water.domain.crystal.service;
 
-import com.example.water.domain.crystal.DTO.CrystalResponseDTO;
-import com.example.water.domain.user.User;
-import com.example.water.domain.user.UserRepository;
+import com.example.water.domain.crystal.dto.response.CrystalResponse;
+import com.example.water.domain.crystal.entity.Crystal;
+import com.example.water.domain.user.entity.User;
+import com.example.water.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -12,13 +13,13 @@ import java.util.*;
 public class CrystalService {
     private final UserRepository userRepository;
 
-    public List<CrystalResponseDTO> getCrystalResponses(Long userId) {
+    public List<CrystalResponse> getCrystalResponses(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         List<Crystal> crystals = user.get().getCrystals();
-        List<CrystalResponseDTO> crystalResponses = new ArrayList<>();
+        List<CrystalResponse> crystalResponses = new ArrayList<>();
 
         for (Crystal crystal : crystals) {
-            CrystalResponseDTO dto = CrystalResponseDTO.builder()
+            CrystalResponse dto = CrystalResponse.builder()
                     .crystalId(crystal.getCrystalId())
                     .red(crystal.getRed())
                     .green(crystal.getGreen())
