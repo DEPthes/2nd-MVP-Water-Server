@@ -1,8 +1,7 @@
-package com.example.water.domain.comment;
+package com.example.water.domain.comment.entity;
 
-import com.example.water.domain.crystal.Crystal;
 import com.example.water.domain.emotion.Emotion;
-import com.example.water.domain.user.User;
+import com.example.water.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

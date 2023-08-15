@@ -1,14 +1,12 @@
-package com.example.water.domain.crystal;
+package com.example.water.domain.crystal.entity;
 
-import com.example.water.domain.comment.Comment;
-import com.example.water.domain.user.User;
+import com.example.water.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 @Table(name="CRYSTAL")
@@ -35,10 +33,6 @@ public class Crystal {
 
     @Column(name="blue")
     private Long blue;
-
-    // 연관 끊기
-//    @OneToMany(mappedBy = "crystalId")
-//    private List<Comment> comments = new ArrayList<>();
 
     public static Crystal of(User userId, Long red, Long green, Long blue) {
         return Crystal.builder()
