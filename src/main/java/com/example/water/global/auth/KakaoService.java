@@ -100,7 +100,7 @@ public class KakaoService {
         result.put("nickname", nickname);
         result.put("email", email);
 
-        if (user != null) { result.put("user_id", user.getUserId()); }
+        if (user != null) { result.put("userId", user.getUserId()); }
 
         if (profileImage == null || profileImage.equals(default_image)) {
             result.put("profileImage", default_image);

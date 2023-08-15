@@ -49,6 +49,7 @@ public class KakaoController {
         String access_token = kakaoService.getToken(code);
         Map<String, Object> userInfoMap = kakaoService.getUserInfo(access_token);
         UserDto userInfo = UserDto.builder()
+                .userId((Long) userInfoMap.get("userId"))
                 .nickname((String) userInfoMap.get("nickname"))
                 .image((String) userInfoMap.get("profileImage"))
                 .email((String) userInfoMap.get("email"))
