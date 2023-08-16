@@ -104,7 +104,7 @@ public class KakaoService {
 
         if (profileImage == null || profileImage.equals(default_image)) {
             result.put("profileImage", default_image);
-        } else { result.put("profileImage", profileImage); }
+        } else { result.put("profileImage", user.getImage()); }
 
         return result;
     }

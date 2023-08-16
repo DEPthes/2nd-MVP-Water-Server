@@ -181,7 +181,7 @@ public class CommentService {
         Long myCrystalCount = saveRequest.getMyCrystalCount();
         User user = userRepository.findById(1L).orElseThrow();
 
-        Comment comment = Comment.of(emotion, myCrystalCount, user, saveRequest.getComment());
+        Comment comment = Comment.of(emotion, myCrystalCount, user, saveRequest.getCommentC());
         commentRepository.save(comment);
 
         // ???????

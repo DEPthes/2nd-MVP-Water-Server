@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -51,6 +52,39 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "닉네임 변경 실패"));
+        }
+    }
+
+    @PatchMapping("/image")
+    public ResponseEntity<BaseResponse<Map<String,Object>>> updateImage(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestParam("image") MultipartFile newImage){
+        try{
+            String access_token=authorizationHeader.substring(7);
+            Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
+
+            Map<String, Object> updateImageResponse = userService.updateImage(userInfo, newImage);
+
+            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS,updateImageResponse));
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "프로필 이미지 변경에 실패했습니다."));
+        }
+    }
+
+    @PatchMapping("/default-image")
+    public ResponseEntity<BaseResponse<Map<String,Object>>> updateImage_default( @RequestHeader("Authorization") String authorizationHeader ){
+        try{
+            String access_token=authorizationHeader.substring(7);
+            Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
+
+            Map<String, Object> updateImageResponse = userService.updateImage(userInfo);
+
+            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS,updateImageResponse));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "프로필 이미지 변경에 실패했습니다."));
         }
     }
 }

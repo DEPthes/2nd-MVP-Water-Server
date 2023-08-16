@@ -1,8 +1,8 @@
 package com.example.water.domain.crystal.controller;
 
 import com.example.water.domain.comment.service.CommentService;
-import com.example.water.domain.crystal.service.CrystalService;
 import com.example.water.domain.crystal.dto.response.CrystalResponse;
+import com.example.water.domain.crystal.service.CrystalService;
 import com.example.water.global.BaseResponse;
 import com.example.water.global.ErrorCode;
 import com.example.water.global.SuccessCode;
