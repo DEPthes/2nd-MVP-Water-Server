@@ -44,4 +44,6 @@ public class User {
     public void setNickname(String newNickname) {
         this.nickname=newNickname;
     }
+
+    public void setImage(String newImage) { this.image=newImage; }
 }

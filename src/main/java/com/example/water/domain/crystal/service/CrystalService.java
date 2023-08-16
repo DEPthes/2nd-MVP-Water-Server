@@ -19,9 +19,12 @@ public class CrystalService {
     private final UserRepository userRepository;
     private final CrystalRepository crystalRepository;
     private final CommentRepository commentRepository;
-    public List<CrystalResponse> getCrystalResponses(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        List<Crystal> crystals = user.get().getCrystals();
+
+    public List<CrystalResponse> getCrystalResponses(Map<String, Object> userInfo) {
+        String email = (String) userInfo.get("email");
+        User user = userRepository.findByEmail(email);
+        List<Crystal> crystals = user.getCrystals();
+
         List<CrystalResponse> crystalResponses = new ArrayList<>();
 
         for (Crystal crystal : crystals) {
