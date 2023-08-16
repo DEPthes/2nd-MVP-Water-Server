@@ -5,9 +5,10 @@ import com.example.water.domain.chatGpt.config.ChatGptConfig;
 import com.example.water.domain.chatGpt.dto.ChatGptQuestionRequest;
 import com.example.water.domain.chatGpt.dto.ChatGptRequest;
 import com.example.water.domain.chatGpt.dto.ChatGptResponse;
-import com.example.water.domain.comment.entity.Comment;
+import com.example.water.domain.comment.dto.request.Color;
 import com.example.water.domain.comment.dto.request.CommentRequest;
 import com.example.water.domain.comment.dto.request.SaveRequest;
+import com.example.water.domain.comment.entity.Comment;
 import com.example.water.domain.comment.repository.CommentRepository;
 import com.example.water.domain.crystal.entity.Crystal;
 import com.example.water.domain.crystal.repository.CrystalRepository;
@@ -176,27 +177,42 @@ public class CommentService {
     }
 
     // 클라가 답변 전문, 감정 id, 결정 id 보내주면 한꺼번에 저장 (닫기 눌렀을 때)
-    public void save(SaveRequest saveRequest) {
-        Emotion emotion = emotionRepository.findById(saveRequest.getEmotionId()).orElseThrow();
+    public void save(Long userId, SaveRequest saveRequest) {
         Long myCrystalCount = saveRequest.getMyCrystalCount();
-        User user = userRepository.findById(1L).orElseThrow();
+        Emotion emotion = emotionRepository.findById(saveRequest.getEmotionId()).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
 
-        Comment comment = Comment.of(emotion, myCrystalCount, user, saveRequest.getCommentC());
+        Comment comment = Comment.of(saveRequest.getComment(), myCrystalCount, emotion, user);
         commentRepository.save(comment);
 
-        // ???????
         Long countMyComment = commentRepository.countByUserId(user);
-        // 10개째면 결정 저장
-        if (countMyComment == 10) {
+        // 20개째면 결정 저장 (20, 40, 60 ..)
+        if (countMyComment % 20 == 0) {
+
+            Long crystalCount = (countMyComment / 20);
+            Color color = calcCrytalColor(crystalCount, user);
 
             // 색깔 계산
-            Crystal crystal = Crystal.of(user, 1L, 1L, 1L);
+            Crystal crystal = Crystal.of(user, crystalCount, color.getRed(), color.getGreen(), color.getBlue());
             crystalRepository.save(crystal);
         }
     }
 
-    // 색깔 계산 (rgb)
-    public void calcCrytalColor() {
+    // 답변 20개 평균 색깔 계산 (rgb)
+    public Color calcCrytalColor(Long crystalCount, User user) {
+        // 답변 20개 가져오기
+        List<Comment> commentList = commentRepository.findAllByMyCrystalCountAndUserId(crystalCount, user);
 
+        Long red = 0L;
+        Long green = 0L;
+        Long blue = 0L;
+
+        for (Comment c : commentList) {
+            red += c.getEmotionId().getRed();
+            green += c.getEmotionId().getGreen();
+            blue += c.getEmotionId().getBlue();
+        }
+
+        return Color.of(red/20, green/20, blue/20);
     }
 }
