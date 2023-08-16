@@ -5,11 +5,10 @@ import com.example.water.domain.chatGpt.config.ChatGptConfig;
 import com.example.water.domain.chatGpt.dto.ChatGptQuestionRequest;
 import com.example.water.domain.chatGpt.dto.ChatGptRequest;
 import com.example.water.domain.chatGpt.dto.ChatGptResponse;
-import com.example.water.domain.comment.entity.Comment;
-import com.example.water.domain.comment.Comment;
 import com.example.water.domain.comment.dto.request.Color;
 import com.example.water.domain.comment.dto.request.CommentRequest;
 import com.example.water.domain.comment.dto.request.SaveRequest;
+import com.example.water.domain.comment.entity.Comment;
 import com.example.water.domain.comment.repository.CommentRepository;
 import com.example.water.domain.crystal.entity.Crystal;
 import com.example.water.domain.crystal.repository.CrystalRepository;
@@ -191,18 +190,18 @@ public class CommentService {
         if (countMyComment % 20 == 0) {
 
             Long crystalCount = (countMyComment / 20);
-            Color color = calcCrytalColor(crystalCount);
+            Color color = calcCrytalColor(crystalCount, user);
 
             // 색깔 계산
-            Crystal crystal = Crystal.of(user, color.getRed(), color.getGreen(), color.getBlue());
+            Crystal crystal = Crystal.of(user, crystalCount, color.getRed(), color.getGreen(), color.getBlue());
             crystalRepository.save(crystal);
         }
     }
 
     // 답변 20개 평균 색깔 계산 (rgb)
-    public Color calcCrytalColor(Long crystalCount) {
+    public Color calcCrytalColor(Long crystalCount, User user) {
         // 답변 20개 가져오기
-        List<Comment> commentList = commentRepository.findAllByMyCrystalCount(crystalCount);
+        List<Comment> commentList = commentRepository.findAllByMyCrystalCountAndUserId(crystalCount, user);
 
         Long red = 0L;
         Long green = 0L;

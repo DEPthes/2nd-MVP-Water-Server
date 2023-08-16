@@ -10,9 +10,6 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 public class CommentResponse {
-    private Long commentId;
-    private Long userId;
-    private Long myCrystalCount;
-    private String content;
     private LocalDate date;
+    private String content;
 }

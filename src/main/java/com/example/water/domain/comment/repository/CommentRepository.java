@@ -10,5 +10,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Long countByUserId(User user);
     Comment findFirstByUserIdOrderByDate(User user);
 
-    List<Comment> findAllByMyCrystalCount(Long myCrystalCount);
+    List<Comment> findAllByMyCrystalCountAndUserId(Long myCrystalCount, User user);
 }
