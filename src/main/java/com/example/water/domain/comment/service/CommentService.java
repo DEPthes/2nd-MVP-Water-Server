@@ -213,6 +213,6 @@ public class CommentService {
             blue += c.getEmotionId().getBlue();
         }
 
-        return Color.of(red/3, green/3, blue/3);
+        return Color.of(red/20, green/20, blue/20);
     }
 }
