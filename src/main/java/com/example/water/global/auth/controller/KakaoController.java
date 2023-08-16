@@ -1,10 +1,11 @@
-package com.example.water.global.auth;
-import com.example.water.domain.user.User;
-import com.example.water.domain.user.UserDto;
-import com.example.water.domain.user.UserService;
+package com.example.water.global.auth.controller;
+import com.example.water.domain.user.dto.UserResponse;
+import com.example.water.domain.user.service.UserService;
+import com.example.water.domain.user.entity.User;
 import com.example.water.global.BaseResponse;
 import com.example.water.global.ErrorCode;
 import com.example.water.global.SuccessCode;
+import com.example.water.global.auth.service.KakaoService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,16 +40,16 @@ public class KakaoController {
                 "&response_type=code" +
                 "&scope=profile_nickname profile_image account_email";
 
-        return "redirect:"+kakaoLoginUrl;
+        return "redirect:" + kakaoLoginUrl;
     }
 
     @ResponseBody
     @GetMapping("/kakao")
-    public ResponseEntity<BaseResponse<UserDto>> getUI(@RequestParam String code) throws IOException, ParseException {
+    public ResponseEntity<BaseResponse<UserResponse>> getUI(@RequestParam String code) throws IOException, ParseException {
         String default_image = "https://media.discordapp.net/attachments/1133490407649591316/1138778386492301463/-04.png?width=662&height=662";
         String access_token = kakaoService.getToken(code);
         Map<String, Object> userInfoMap = kakaoService.getUserInfo(access_token);
-        UserDto userInfo = UserDto.builder()
+        UserResponse userInfo = UserResponse.builder()
                 .userId((Long) userInfoMap.get("userId"))
                 .nickname((String) userInfoMap.get("nickname"))
                 .image((String) userInfoMap.get("profileImage"))
@@ -68,7 +69,8 @@ public class KakaoController {
             }
             userService.createUser(userInfo);// 새로운 사용자 정보를 DB에 등록
         }
-        BaseResponse<UserDto> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, userInfo);
+        // BaseResponse 객체를 생성하여 JSON 응답 데이터 구성
+        BaseResponse<UserResponse> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, userInfo);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 

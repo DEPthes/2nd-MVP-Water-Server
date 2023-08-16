@@ -3,10 +3,10 @@ package com.example.water.domain.diary.controller;
 import com.example.water.domain.diary.service.DiaryService;
 import com.example.water.domain.diary.dto.response.DiaryResponse;
 import com.example.water.domain.diary.dto.request.DiaryRequest;
-import com.example.water.domain.user.User;
-import com.example.water.domain.user.UserService;
+import com.example.water.domain.user.entity.User;
+import com.example.water.domain.user.service.UserService;
 import com.example.water.global.BaseResponse;
-import com.example.water.global.auth.KakaoService;
+import com.example.water.global.auth.service.KakaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
