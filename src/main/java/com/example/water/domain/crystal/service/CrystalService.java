@@ -1,5 +1,8 @@
 package com.example.water.domain.crystal.service;
 
+import com.example.water.domain.comment.dto.response.CommentResponse;
+import com.example.water.domain.comment.entity.Comment;
+import com.example.water.domain.comment.repository.CommentRepository;
 import com.example.water.domain.crystal.dto.response.CrystalResponse;
 import com.example.water.domain.crystal.entity.Crystal;
 import com.example.water.domain.crystal.repository.CrystalRepository;
@@ -14,6 +17,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CrystalService {
     private final UserRepository userRepository;
+    private final CrystalRepository crystalRepository;
+    private final CommentRepository commentRepository;
 
     public List<CrystalResponse> getCrystalResponses(Map<String, Object> userInfo) {
         String email = (String) userInfo.get("email");

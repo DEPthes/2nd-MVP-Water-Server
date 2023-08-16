@@ -25,6 +25,9 @@ public class Crystal {
     @JoinColumn(name="userId")
     private User userId;
 
+    @Column(name="myCrystalCount")
+    private Long myCrystalCount;
+
     @Column(name="red")
     private Long red;
 
@@ -34,9 +37,10 @@ public class Crystal {
     @Column(name="blue")
     private Long blue;
 
-    public static Crystal of(User userId, Long red, Long green, Long blue) {
+    public static Crystal of(User userId, Long myCrystalCount, Long red, Long green, Long blue) {
         return Crystal.builder()
                 .userId(userId)
+                .myCrystalCount(myCrystalCount)
                 .red(red)
                 .green(green)
                 .blue(blue)
