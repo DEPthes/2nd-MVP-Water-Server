@@ -210,9 +210,9 @@ public class CommentService {
         for (Comment c : commentList) {
             red += c.getEmotionId().getRed();
             green += c.getEmotionId().getGreen();
-            green += c.getEmotionId().getBlue();
+            blue += c.getEmotionId().getBlue();
         }
 
-        return Color.of(red, green, blue);
+        return Color.of(red/3, green/3, blue/3);
     }
 }
