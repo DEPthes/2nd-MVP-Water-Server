@@ -25,11 +25,11 @@ public class CrystalController {
     public ResponseEntity<BaseResponse<List<CrystalResponse>>> getAllCrystal(@RequestHeader("Authorization") String authorizationHeader) {
         try {
             String access_token=authorizationHeader.substring(7);
-            Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
-            Long userId= (Long) userInfo.get("user_id");
-            List<CrystalResponse> crystalResponses = crystalService.getCrystalResponses(userId);
 
-            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, crystalResponses));
+            Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
+            List<CrystalResponse> crystalResponses = crystalService.getCrystalResponses(userInfo);
+
+            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CRYSTAL_INFO_SUCCESS, crystalResponses));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "모든 결정 조회에 실패했습니다."));
