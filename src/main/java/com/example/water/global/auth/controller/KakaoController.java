@@ -70,7 +70,7 @@ public class KakaoController {
             userService.createUser(userInfo);// 새로운 사용자 정보를 DB에 등록
         }
         // BaseResponse 객체를 생성하여 JSON 응답 데이터 구성
-        BaseResponse<UserResponse> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, userInfo);
+        BaseResponse<UserResponse> response = BaseResponse.success(SuccessCode.USER_INFO_SUCCESS, userInfo);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
@@ -86,7 +86,7 @@ public class KakaoController {
 
             Long userId = user.getUserId();
             kakaoService.deleteUser(access_token, userId);
-            BaseResponse<String> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS);
+            BaseResponse<String> response = BaseResponse.success(SuccessCode.EXIT_SUCCESS);
             return ResponseEntity.ok(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -104,7 +104,7 @@ public class KakaoController {
         kakaoService.logout(access_token);
 
         // 로그아웃 성공 메시지를 응답으로 전송
-        BaseResponse<String> response = BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, "로그아웃에 성공했습니다.");
+        BaseResponse<String> response = BaseResponse.success(SuccessCode.LOGOUT_SUCCESS);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 }

@@ -13,7 +13,13 @@ public enum SuccessCode {
     // api 만들고 수정하기
     CUSTOM_SUCCESS(OK, "~ 조회에 성공했습니다."),
     WRITE_DIARY_SUCCESS(OK, "일기 작성에 성공했습니다."),
-    CUSTOM_CREATED_SUCCESS(CREATED, "~ 생성에 성공했습니다.");
+    CUSTOM_CREATED_SUCCESS(CREATED, "~ 생성에 성공했습니다."),
+    USER_INFO_SUCCESS(OK, "사용자 조회에 성공했습니다."),
+    EXIT_SUCCESS(OK,"사용자 탈퇴가 완료되었습니다."),
+    LOGOUT_SUCCESS(OK, "사용자 로그아웃이 완료되었습니다."),
+    CRYSTAL_INFO_SUCCESS(OK,"모든 결정 조회에 성공했습니다."),
+    UPDATE_IMAGE_SUCCESS(OK,"프로필 이미지 변경에 성공했습니다."),
+    UPDATE_NICKNAME_SUCCESS(OK,"닉네임 변경에 성공했습니다.");
 
 
     private final HttpStatus httpStatus;

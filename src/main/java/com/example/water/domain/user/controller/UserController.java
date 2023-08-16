@@ -30,10 +30,10 @@ public class UserController {
             Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
             Mypage mypageResponse = userService.getMypage(userInfo);
 
-            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS, mypageResponse));
+            return ResponseEntity.ok(BaseResponse.success(SuccessCode.USER_INFO_SUCCESS, mypageResponse));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "마이페이지 조회 실패"));
+                    .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "마이페이지 조회에 실패했습니다."));
         }
     }
 
@@ -48,10 +48,10 @@ public class UserController {
             String newNickname = requestBody.get("newNickname");
             Map<String, Object> updateNicknameResponse = userService.updateNickname(userInfo, newNickname);
 
-            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS,updateNicknameResponse));
+            return ResponseEntity.ok(BaseResponse.success(SuccessCode.UPDATE_NICKNAME_SUCCESS,updateNicknameResponse));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "닉네임 변경 실패"));
+                    .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "닉네임 변경에 실패했습니다."));
         }
     }
 
@@ -65,7 +65,7 @@ public class UserController {
 
             Map<String, Object> updateImageResponse = userService.updateImage(userInfo, newImage);
 
-            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS,updateImageResponse));
+            return ResponseEntity.ok(BaseResponse.success(SuccessCode.UPDATE_IMAGE_SUCCESS,updateImageResponse));
         }catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -81,7 +81,7 @@ public class UserController {
 
             Map<String, Object> updateImageResponse = userService.updateImage(userInfo);
 
-            return ResponseEntity.ok(BaseResponse.success(SuccessCode.CUSTOM_SUCCESS,updateImageResponse));
+            return ResponseEntity.ok(BaseResponse.success(SuccessCode.UPDATE_IMAGE_SUCCESS,updateImageResponse));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(BaseResponse.error(ErrorCode.REQUEST_VALIDATION_EXCEPTION, "프로필 이미지 변경에 실패했습니다."));
