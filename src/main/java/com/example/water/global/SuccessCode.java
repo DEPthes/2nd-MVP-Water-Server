@@ -21,7 +21,8 @@ public enum SuccessCode {
     CRYSTAL_INFO_SUCCESS(OK,"모든 결정 조회에 성공했습니다."),
     UPDATE_IMAGE_SUCCESS(OK,"프로필 이미지 변경에 성공했습니다."),
     UPDATE_NICKNAME_SUCCESS(OK,"닉네임 변경에 성공했습니다."),
-    SAVE_COMMENT_SUCCESS(OK, "답변 저장에 성공했습니다.");
+    SAVE_COMMENT_SUCCESS(OK, "답변 저장에 성공했습니다."),
+    CREATE_COMMENT_SUCCESS(OK, "답변 생성에 성공했습니다.");
 
 
     private final HttpStatus httpStatus;
