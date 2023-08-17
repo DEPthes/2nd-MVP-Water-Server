@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Locale;
 import java.util.Map;
+
+import static com.example.water.global.SuccessCode.CREATE_COMMENT_SUCCESS;
 import static com.example.water.global.SuccessCode.SAVE_COMMENT_SUCCESS;
 
 @RestController
@@ -42,6 +44,13 @@ public class CommentController {
         }
     }
 
+    // 위로 답변 문단 한번에 받기
+    @PostMapping(value="comfortcomplete")
+    public BaseResponse<String> comfortCommentComplete(@RequestBody CommentRequest commentRequest){
+        String comment = commentService.comfortCommentComplete(commentRequest);
+        return BaseResponse.success(CREATE_COMMENT_SUCCESS, comment);
+    }
+
     // 편들기 답변 받기
     @PostMapping(value="myside", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> mysideComment(Locale locale,
@@ -54,6 +63,13 @@ public class CommentController {
             log.error(je.getMessage());
             return Flux.empty();
         }
+    }
+
+    // 편들기 답변 문단 한번에 받기
+    @PostMapping(value="mysidecomplete")
+    public BaseResponse<String> mysideCommentComplete(@RequestBody CommentRequest commentRequest){
+        String comment = commentService.mysideCommentComplete(commentRequest);
+        return BaseResponse.success(CREATE_COMMENT_SUCCESS, comment);
     }
 
     // 닫기 눌렀을 때 (답변 저장)

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import io.github.flashvayne.chatgpt.service.ChatgptService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final CrystalRepository crystalRepository;
+    private final ChatgptService chatgptService;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -100,6 +102,15 @@ public class CommentService {
         return eventStream;
     }
 
+    // 위로 답변 문단 stream x
+    public String comfortCommentComplete(CommentRequest commentRequest) {
+        String content = commentRequest.getDiary() + "위 상황에 대해서 다정한 말투로 편을 들어주는 위로를 해줘. 편지쓰는 것처럼 하지 마. 처음에 인사하지마. 네가 ChatGPT인 티를 내지 말고, 사람처럼 말해. 반말은 하지마. 끝에 감사인사도 하지마. 세줄로 답변해줘.";
+
+        String comment = chatgptService.sendMessage(content);
+
+        return comment;
+    }
+
     // 편들기 답안 stream
     public Flux<String> mysideComment(CommentRequest commentRequest) throws JsonProcessingException {
 
@@ -136,6 +147,15 @@ public class CommentService {
 
         // 답안
         return eventStream;
+    }
+
+    // 편들기 답변 문단 stream x
+    public String mysideCommentComplete(CommentRequest commentRequest) {
+        String content = commentRequest.getDiary() + "위 상황에 대해서 내 편을 들어주고, 상대방 욕해줘. 상대방이 잘못했다고 말해줘. 편지쓰는 것처럼 하지 마. 처음에 인사하지마. 네가 ChatGPT인 티를 내지 말고, 사람처럼 말해. 반말은 하지마. 끝에 감사인사도 하지마. 세줄로 답변해줘.";
+
+        String comment = chatgptService.sendMessage(content);
+
+        return comment;
     }
 
     // gpt 단답에 사용됨
