@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -73,8 +73,8 @@ public class UserService {
 
         // 첫 content 이후 날짜 수 계산
         Comment firstComment = commentRepository.findFirstByUserIdOrderByDate(user);
-        LocalDate firstCommentDate = (firstComment != null) ? firstComment.getDate() : LocalDate.now();
-        LocalDate currentDate = LocalDate.now();
+        LocalDateTime firstCommentDate = (firstComment != null) ? firstComment.getDate() : LocalDateTime.now();
+        LocalDateTime currentDate = LocalDateTime.now();
         long sinceDate = (firstComment != null) ? ChronoUnit.DAYS.between(firstCommentDate, currentDate) : 0;
 
         // MypageDTO 생성 & 반환

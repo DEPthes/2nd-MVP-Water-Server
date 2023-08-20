@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="COMMENT")
@@ -37,7 +37,7 @@ public class Comment {
     private User userId;
 
     @Column(name="date")
-    private LocalDate date;
+    private LocalDateTime date;
 
     public static Comment of(String commentContent, Long myCrystalCount, Emotion emotionId, User userId) {
         return Comment.builder()
@@ -45,7 +45,7 @@ public class Comment {
                 .myCrystalCount(myCrystalCount)
                 .emotionId(emotionId)
                 .userId(userId)
-                .date(LocalDate.now())
+                .date(LocalDateTime.now())
                 .build();
     }
 }
