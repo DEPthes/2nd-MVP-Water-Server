@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import static com.example.water.global.SuccessCode.COUNT_COMMENT_SUCCESS;
 import static com.example.water.global.SuccessCode.GET_ALL_COMMENTS_SUCCESS;
 
 @RestController
@@ -53,5 +54,19 @@ public class CrystalController {
         List<CommentResponse> allComments = crystalService.getAllComments(crystalId, user);
 
         return BaseResponse.success(GET_ALL_COMMENTS_SUCCESS, allComments);
+    }
+
+    // 결정의 답변 개수 조회
+    @GetMapping("/comments")
+    public BaseResponse<Long> countCrystalsComment(@RequestHeader("Authorization") String authorizationHeader) {
+        String access_token=authorizationHeader.substring(7);
+        Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
+        String email = (String) userInfo.get("email");
+
+        User user = userService.findByEmail(email);//email을 사용하여 DB에서 유저 정보 조회
+
+        Long countCrystalsComment = crystalService.countCrystalsComment(user);
+
+        return BaseResponse.success(COUNT_COMMENT_SUCCESS, countCrystalsComment);
     }
 }
