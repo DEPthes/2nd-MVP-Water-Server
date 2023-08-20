@@ -48,9 +48,20 @@ public class CrystalService {
         List<Comment> commentList = commentRepository.findAllByMyCrystalCountAndUserId(crystalCount, user);
 
         List<CommentResponse> commentResponseList = commentList.stream()
-                .map(m-> new CommentResponse(m.getDate(), m.getCommentContent()))
+                .map(m-> new CommentResponse(m.getDate().toLocalDate(), m.getCommentContent()))
                 .collect(Collectors.toList());
 
         return commentResponseList;
+    }
+
+    // 결정의 답변 개수 조회
+    public Long countCrystalsComment(User user) {
+        Comment comment = commentRepository.findFirstByUserIdOrderByDateDesc(user);
+
+        Long myCrystalCount = comment.getMyCrystalCount();
+
+        Long countComments = commentRepository.countByMyCrystalCountAndUserId(myCrystalCount, user);
+
+        return countComments;
     }
 }
