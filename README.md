@@ -19,6 +19,6 @@ AI가 사용자의 감정을 공감하고, 감정 결정을 기반으로 컬렉�
 - **AI 및 자연어 처리**: ChatGPT API
 - **클라우드 서비스**: AWS (EC2, RDS, S3)
 - **버전 관리**: Git, GitHub
-- **기타 도구**: Maven, Postman (API 테스트)
+- **기타 도구**: Gradle, Postman
 
 
